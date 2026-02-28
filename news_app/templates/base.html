@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div class="mobile-header">
+    <a href="{% url 'home_page' %}" class="mobile-logo">
+        <img src="{% static 'img/logo.svg' %}" alt="logo">
+    </a>
+    <div class="mobile-icons">
+        <a href="{% url 'search_page' %}">
+            <img src="{% static 'img/search.svg' %}" alt="search">
+        </a>
+        <a href="{% url 'admin:index' %}">
+            <img src="{% static 'img/login.svg' %}" alt="account">
+        </a>
+    </div>
+</div>
+
+    <header class="header">
+        <div class="primary-header">
+            <div class="container">
+                <nav>
+                    <a href="{% url 'home_page' %}">Home</a>
+                    <a href="#">About</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Contact us</a>
+                </nav>
+                <nav>
+                    <a href="#">
+                        <img src="{% static 'img/threads.svg' %}" alt="threads">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'img/telegram.svg' %}" alt="telegram">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'img/instagram.svg' %}" alt="instagram">
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            <div class="secondary-header">
+                <div class="container-fluid">
+                    <a href="{% url 'admin:index' %}">
+                        <img src="{% static 'img/login.svg' %}" alt="user">
+                        <span>Login</span>
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'img/logo.svg' %}" alt="logo">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'img/phone.svg' %}" alt="phone">
+                        <span>+7 777 123 45 67</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="third-header">
+                <div class="container-fluid">
+                    <nav>
+                        <a href="{% url 'all_news_page' %}">All news</a>
+                        {% for category in categories %}
+                        <a href="{% url 'news_by_category' pk=category.pk %}">{{ category.name }}</a>
+                        {% endfor %}
+                    </nav>
+                    <a href="{% url 'search_page' %}">
+                        <img src="{% static 'img/search.svg' %}" alt="search">
+                        <span>Search</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+       {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="#">
+                <img src="{% static 'img/footer_logo.svg' %}" alt="">
+            </a>
+            <p>&copy; TOO Qaznews 2026, All rights reserved.</p>
+        </div>
+    </footer>
+
+<div class="bottom-nav">
+    <a href="{% url 'home_page' %}">
+        Home
+    </a>
+    {% for category in bottom_categories %}
+        <a href="{% url 'news_by_category' pk=category.pk %}">
+            <span>{{ category.name }}</span>
+        </a>
+    {% endfor %}
+
+    <a href="#" onclick="openMenu()">
+        <span>Menu</span>
+    </a>
+</div>
+
+    <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+<div id="mobileMenu" class="mobile-menu">
+    <div class="menu-drag"></div>
+
+    <div class="menu-categories">
+        {% for category in menu_categories %}
+        <a href="{% url 'news_by_category' pk=category.pk %}" class="menu-cat">
+            <div class="icon"></div>
+            <span>{{ category.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="menu-list">
+
+        <a href="{% url 'all_news_page' %}" class="menu-item">
+            <span>All news</span>
+            <span class="arrow">›</span>
+        </a>
+
+        <div class="menu-item" onclick="toggleAds()">
+            <span>Advertising</span>
+            <span class="arrow">›</span>
+        </div>
+
+        <div id="adsBlock" class="ads-block">
+            {% for adv in advs|slice:":4" %}
+                <img src="{{ adv.image_url }}" alt="{{ adv.name }}">
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="menu-contact">
+        <h4>Contact us</h4>
+        <p class="phone">+7 777 123 45 67</p>
+    </div>
+
+    <div class="menu-socials">
+        <img src="{% static './img/menu_instagram.svg' %}">
+        <img src="{% static './img/menu_telegram.svg' %}">
+        <img src="{% static './img/menu_threads.svg' %}">
+    </div>
+
+</div>
+
+<script>
+    function openMenu() {
+    document.getElementById("mobileMenu").classList.add("active");
+    document.getElementById("menuOverlay").classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeMenu() {
+    document.getElementById("mobileMenu").classList.remove("active");
+    document.getElementById("menuOverlay").classList.remove("active");
+    document.body.style.overflow = "auto";
+}
+
+    function toggleAds() {
+    document.getElementById("adsBlock").classList.toggle("active");
+}
+</script>
+</body>
+
+</html>

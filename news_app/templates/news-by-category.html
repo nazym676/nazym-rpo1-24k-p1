@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+ <section class="news-block">
+            <div class="container-fluid">
+                <div class="news-content">
+                    <h3>{{ category.name }} news</h3>
+                    {% for post in posts %}
+                    <div class="news-card">
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}" class="news-img">
+                        <div class="news-info">
+                            <h3>{{ post.title|truncatewords:7 }}</h3>
+                            <span>{{ post.created_at|date:"d.m.Y" }}</span>
+                            <a href="#">#{{ post.category.name }}</a>
+                            <p>{{ post.description|truncatewords:20 }}</p>
+                            <a href="{% url 'read_news_page' pk=post.pk %}">Read</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                  <div class="adv-content">
+                    <h3>Advertising</h3>
+                    <div class="adv-card">
+                        {% for adv in advs %}
+                        <img src="{{ adv.image_url }}" alt="{{ adv.name }}" class="adv-img">
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+{% endblock %}
